@@ -1,26 +1,746 @@
-@import "tailwindcss";
+/* @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card-bg: #ffffff;    
+  --accent: #00f2ea;     
+  
+  --color-brand: var(--accent);
+  --brand-gradient: linear-gradient(135deg, #0f172a 0%, #14b8a6 100%);
 }
 
-@theme inline {
+.dark {
+
+  --background: #020617; 
+  --foreground: #f9fafb;
+  --card-bg: #0f172a;    
+}
+
+@theme {
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card-bg);
+  
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+ 
+  @keyframes infinite-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  --animate-infinite-scroll: infinite-scroll 25s linear infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), ui-sans-serif, system-ui;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
   }
 }
 
-body {
-  background: var(--background);
+
+@layer components {
+  .btn-primary {
+    @apply relative overflow-hidden px-8 py-4 rounded-xl font-bold text-lg 
+           transition-all duration-500 ease-in-out transform active:scale-95
+           bg-teal-500 text-white shadow-[0_0_15px_rgba(20,184,166,0.3)];
+    border: 2px solid transparent;
+  }
+
+  .btn-primary:hover {
+    @apply bg-white text-teal-500 -translate-y-1 shadow-[0_0_25px_rgba(20,184,166,0.5)];
+    border-color: #14b8a6;
+  }
+
+ 
+  .btn-secondary {
+    @apply relative overflow-hidden px-8 py-4 rounded-xl font-bold text-lg 
+           transition-all duration-500 ease-in-out transform active:scale-95
+           border-2 border-white/20 text-white backdrop-blur-md;
+  }
+
+  .btn-secondary:hover {
+    @apply bg-white text-slate-950 border-white -translate-y-1 shadow-xl;
+  }
+}
+
+@layer utilities {
+  .stroke-text {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+    color: transparent;
+  }
+  
+  .stroke-text:hover {
+    -webkit-text-stroke: 1px #14b8a6;
+    color: #14b8a6;
+  }
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .bg-grid-pattern {
+    background-image: 
+      radial-gradient(circle, rgba(20, 184, 166, 0.4) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+
+  .dark .bg-grid-pattern {
+    background-image: 
+      radial-gradient(circle, rgba(20, 184, 166, 0.1) 1px, transparent 1px);
+  }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.2; }
+  50% { transform: translateY(-20px) rotate(10deg); opacity: 0.5; }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+ */
+
+
+
+ @import "tailwindcss";
+
+/* ============================================================
+   ROOT VARIABLES
+   ============================================================ */
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card-bg: #ffffff;
+  --accent: #00f2ea;
+  --color-brand: var(--accent);
+  --brand-gradient: linear-gradient(135deg, #0f172a 0%, #14b8a6 100%);
+}
+
+.dark {
+  --background: #020617;
+  --foreground: #f9fafb;
+  --card-bg: #0f172a;
+}
+
+/* ============================================================
+   THEME TOKENS
+   ============================================================ */
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card-bg);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  @keyframes infinite-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  --animate-infinite-scroll: infinite-scroll 25s linear infinite;
+}
+
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), ui-sans-serif, system-ui;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  }
+
+  /*
+    UNDERLINE LOGIC — Read carefully:
+
+    We exclude ALL special link types from this rule.
+    These excluded types handle their own hover visuals:
+      - .btn-primary / .btn-secondary  → buttons, no underline needed
+      - .nav-link                       → uses ::after pseudo underline
+      - .project-link / .view-project   → custom arrow-gap animation
+      - .view-project-link              → custom card hover effect
+
+    Everything else (plain <a> tags in body content, footers, etc.)
+    WILL get teal color + underline on hover. This is correct behavior.
+  */
+  a:not(.btn-primary):not(.btn-secondary):not(.nav-link):not(.project-link):not(.view-project):not(.view-project-link):not(.logo-link):not(.header-cta) {
+    transition: color 0.3s ease;
+  }
+ 
+  a:not(.btn-primary):not(.btn-secondary):not(.nav-link):not(.project-link):not(.view-project):not(.view-project-link):not(.logo-link):not(.header-cta):hover {
+    color: #14b8a6;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
+    text-decoration-color: #14b8a6;
+  }
+
+  /* Images */
+  img {
+    transition: transform 0.5s ease, filter 0.5s ease;
+  }
+  img:hover {
+    transform: scale(1.02);
+    filter: brightness(1.05);
+  }
+
+  /* Global card hover utility */
+  .card-hover {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+}
+
+/* ============================================================
+   COMPONENT STYLES
+   ============================================================ */
+@layer components {
+
+  /* ── Primary Button ── */
+  .btn-primary {
+    @apply relative overflow-hidden px-8 py-4 rounded-xl font-bold text-lg
+           transition-all duration-500 ease-in-out active:scale-95
+           bg-teal-500 text-white shadow-[0_0_15px_rgba(20,184,166,0.3)];
+    border: 2px solid transparent;
+    text-decoration: none !important;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: rgba(255, 255, 255, 0.15);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .btn-primary:hover {
+    @apply bg-white text-teal-500 -translate-y-1 shadow-[0_0_25px_rgba(20,184,166,0.5)];
+    border-color: #14b8a6;
+    text-decoration: none !important;
+  }
+
+  .btn-primary:hover::before {
+    opacity: 1;
+  }
+
+  .btn-primary:active {
+    transform: scale(0.95);
+  }
+
+  /* ── Secondary Button ── */
+  .btn-secondary {
+    @apply relative overflow-hidden px-8 py-4 rounded-xl font-bold text-lg
+           transition-all duration-500 ease-in-out active:scale-95
+           border-2 border-white/20 text-white backdrop-blur-md;
+    text-decoration: none !important;
+  }
+
+  .btn-secondary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .btn-secondary:hover {
+    @apply bg-white text-slate-950 border-white -translate-y-1 shadow-xl;
+    text-decoration: none !important;
+  }
+
+  .btn-secondary:hover::before {
+    left: 100%;
+  }
+
+  .btn-secondary:active {
+    transform: scale(0.95);
+  }
+
+  /* ── Navigation Links ──
+     Uses ::after for underline — NOT text-decoration.
+     No conflict with base <a> rule because .nav-link is excluded above.
+  ── */
+  .nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+    text-decoration: none !important;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #14b8a6;
+    transition: width 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .nav-link.active::after {
+    width: 100%;
+    height: 3px;
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+    box-shadow: 0 0 10px #14b8a6;
+  }
+
+  /* ── Project / View-Project Links ── */
+  .project-link,
+  .view-project,
+  .view-project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--foreground);
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: color 0.3s ease, gap 0.3s ease;
+  }
+
+  .project-link:hover,
+  .view-project:hover {
+    color: #14b8a6;
+    gap: 12px;
+    text-decoration: none !important;
+  }
+
+  .project-link .arrow,
+  .view-project .arrow,
+  .view-project-arrow {
+    transition: transform 0.3s ease;
+  }
+
+  .project-link:hover .arrow,
+  .view-project:hover .arrow,
+  .view-project-link:hover .view-project-arrow {
+    transform: translateX(5px);
+  }
+
+  .view-project-content {
+    transition: background 0.3s ease, border-color 0.3s ease,
+                transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .view-project-link:hover .view-project-content {
+    background: rgba(20, 184, 166, 0.3) !important;
+    border-color: #14b8a6 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -10px rgba(20, 184, 166, 0.3);
+  }
+
+  .view-project-link:hover .view-project-text {
+    color: #5eead4 !important;
+  }
+
+  /* ── Social Icons ── */
+  .social-icon {
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+  .social-icon:hover {
+    transform: translateY(-3px) scale(1.1);
+    filter: drop-shadow(0 10px 8px rgba(20, 184, 166, 0.2));
+  }
+
+  /* ── Feature Cards ── */
+  .feature-card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                box-shadow 0.4s ease;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 30px 40px -20px rgba(20, 184, 166, 0.3);
+  }
+
+  .feature-card:hover::before {
+    opacity: 1;
+  }
+}
+
+/* ============================================================
+   UTILITY STYLES
+   ============================================================ */
+@layer utilities {
+
+  .stroke-text {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+    color: transparent;
+    transition: -webkit-text-stroke 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  }
+  .stroke-text:hover {
+    -webkit-text-stroke: 1px #14b8a6;
+    color: #14b8a6;
+    transform: scale(1.05);
+    text-shadow: 0 0 20px rgba(20, 184, 166, 0.3);
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.4s ease, border-color 0.4s ease,
+                box-shadow 0.4s ease, transform 0.4s ease;
+  }
+  .glass-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(20, 184, 166, 0.3);
+    box-shadow: 0 15px 35px -15px rgba(20, 184, 166, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .bg-grid-pattern {
+    background-image: radial-gradient(circle, rgba(20, 184, 166, 0.4) 1px, transparent 1px);
+    background-size: 30px 30px;
+    transition: background-size 0.5s ease;
+  }
+  .bg-grid-pattern:hover {
+    background-size: 35px 35px;
+  }
+  .dark .bg-grid-pattern {
+    background-image: radial-gradient(circle, rgba(20, 184, 166, 0.1) 1px, transparent 1px);
+  }
+
+  .hover-scale {
+    transition: transform 0.3s ease;
+  }
+  .hover-scale:hover { transform: scale(1.05); }
+
+  .hover-glow {
+    transition: box-shadow 0.3s ease;
+  }
+  .hover-glow:hover { box-shadow: 0 0 25px rgba(20, 184, 166, 0.4); }
+
+  .hover-rotate {
+    transition: transform 0.3s ease;
+  }
+  .hover-rotate:hover { transform: rotate(5deg); }
+
+  .hover-border { position: relative; }
+  .hover-border::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: #14b8a6;
+    transition: width 0.3s ease;
+  }
+  .hover-border:hover::after { width: 100%; }
+
+  .hover-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .hover-shimmer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -75%;
+    width: 50%; height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 100%);
+    transform: skewX(-25deg);
+    transition: left 0.5s ease;
+  }
+  .hover-shimmer:hover::before { left: 125%; }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.4); }
+    50%       { box-shadow: 0 0 20px 5px rgba(20, 184, 166, 0.6); }
+  }
+  .hover-pulse:hover { animation: pulse-glow 1.5s infinite; }
+
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* ============================================================
+   KEYFRAME ANIMATIONS
+   ============================================================ */
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg);      opacity: 0.2; }
+  50%       { transform: translateY(-20px) rotate(10deg); opacity: 0.5; }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ============================================================
+   DARK MODE OVERRIDES
+   ============================================================ */
+.dark .glass-card:hover {
+  background: rgba(20, 184, 166, 0.1);
+  border-color: rgba(20, 184, 166, 0.4);
+}
+.dark .feature-card:hover {
+  box-shadow: 0 30px 40px -20px rgba(20, 184, 166, 0.5);
+}
+
+/* ============================================================
+   RESPONSIVE — REDUCED MOTION ON MOBILE
+   ============================================================ */
+@media (max-width: 768px) {
+  .btn-primary::before,
+  .btn-secondary::before,
+  .hover-shimmer::before {
+    display: none;
+  }
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+  }
+  .feature-card:hover {
+    transform: translateY(-4px) scale(1.01);
+  }
+}
+
+/* ============================================================
+   TOUCH DEVICE — DISABLE HOVER, USE ACTIVE
+   ============================================================ */
+@media (hover: none) and (pointer: coarse) {
+  .btn-primary::before,
+  .btn-secondary::before,
+  .nav-link::after,
+  .hover-shimmer::before {
+    display: none;
+  }
+  .btn-primary:active,
+  .btn-secondary:active {
+    transform: scale(0.95);
+  }
+  .feature-card:active {
+    transform: scale(0.98);
+  }
+}
+        /* ── Marquee animation ── */
+        @keyframes testimonials-scroll {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-50%); }
+        }
+
+        .testimonials-track {
+          display: flex;
+          width: max-content;
+          gap: 1.25rem;
+          padding: 2.5rem 0;
+          animation: testimonials-scroll 40s linear infinite;
+          will-change: transform;
+        }
+
+        .testimonials-track.paused {
+          animation-play-state: paused !important;
+        }
+
+        @media (max-width: 640px) {
+          .testimonials-track { animation-duration: 26s; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .testimonials-track { animation: none; }
+        }
+
+        /* ── Card sizes ── */
+        .testimonial-card {
+          width: 300px;
+          flex-shrink: 0;
+        }
+        @media (min-width: 480px) {
+          .testimonial-card { width: 360px; }
+        }
+        @media (min-width: 768px) {
+          .testimonials-track { gap: 2rem; }
+          .testimonial-card   { width: 450px; }
+        }
+
+        /* ── Touch hint — only on touch screens ── */
+        .touch-hint-wrapper {
+          display: none;
+          position: relative;
+          height: 1.4rem;
+          margin-bottom: 0.25rem;
+          text-align: center;
+        }
+
+        .touch-hint {
+          position: absolute;
+          inset: 0;
+          font-size: 0.65rem;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: #14b8a6;
+          transition: opacity 0.3s ease;
+          opacity: 1;
+        }
+
+        .resume-hint {
+          color: #f59e0b;
+        }
+
+        .hidden-hint {
+          opacity: 0;
+          pointer-events: none;
+        }
+
+        /* Only show hint + pointer cursor on real touch devices */
+        @media (hover: none) and (pointer: coarse) {
+          .touch-hint-wrapper  { display: block; }
+          .testimonials-track  { cursor: pointer; }
+        }
+      /* ============================================================
+   FOOTER STYLES
+   ============================================================ */
+
+/* ── Social icons ── */
+.footer-social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  background: rgba(20, 184, 166, 0.1);
+  color: #14b8a6;
+  text-decoration: none !important;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+/* Desktop hover */
+.footer-social-icon:hover {
+  background: #14b8a6;
+  color: #fff;
+  transform: translateY(-3px);
+  text-decoration: none !important;
+}
+/* Mobile/tablet active — same as hover */
+.footer-social-icon:active {
+  background: #14b8a6;
+  color: #fff;
+  transform: scale(0.95);
+  text-decoration: none !important;
+}
+
+/* ── Nav links ── */
+.footer-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  font-size: 0.875rem;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  opacity: 0.6;
+  text-decoration: none !important;
+  transition: opacity 0.2s ease, color 0.2s ease, gap 0.3s ease;
+}
+/* Desktop hover */
+.footer-nav-link:hover {
+  opacity: 1;
+  color: #14b8a6;
+  gap: 0.5rem;
+  text-decoration: none !important;
+}
+/* Mobile/tablet active */
+.footer-nav-link:active {
+  opacity: 1;
+  color: #14b8a6;
+  gap: 0.5rem;
+  text-decoration: none !important;
+}
+
+/* Sliding arrow indicator */
+.footer-nav-arrow {
+  display: inline-block;
+  width: 0;
+  height: 2px;
+  background: #14b8a6;
+  border-radius: 1px;
+  flex-shrink: 0;
+  transition: width 0.3s ease, margin-right 0.3s ease;
+}
+.footer-nav-link:hover .footer-nav-arrow,
+.footer-nav-link:active .footer-nav-arrow {
+  width: 0.5rem;
+  margin-right: 0.25rem;
+}
+
+/* ── Legal links ── */
+.footer-legal-link {
+  text-decoration: none !important;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+.footer-legal-link:hover,
+.footer-legal-link:active {
+  color: #14b8a6;
+  opacity: 1;
+  text-decoration: none !important;
+}
+
+/* ── Newsletter input ── */
+.footer-newsletter-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  background: var(--card-bg);
+  color: var(--foreground);
+  border: 1px solid #e2e8f0;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.dark .footer-newsletter-input {
+  border-color: #1e293b;
+}
+.footer-newsletter-input::placeholder {
+  color: var(--foreground);
+  opacity: 0.4;
+}
+.footer-newsletter-input:focus-visible {
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.25);
+}
+.footer-newsletter-input--error {
+  border-color: #ef4444 !important;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .footer-social-icon,
+  .footer-nav-link,
+  .footer-nav-arrow,
+  .footer-legal-link {
+    transition: none;
+  }
 }
