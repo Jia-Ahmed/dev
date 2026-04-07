@@ -280,7 +280,7 @@ We develop cloud-based web applications and SaaS platforms with subscription man
       'Predictive Modeling',
       'MloP & AI Strategy'
     ],
-    image: '/service_imgs/ai.webp',
+    image: '/service_imgs/AI.webp',
 
     overview: {
       heading: 'Future-Proof Your Business with Cognitive Intelligence',

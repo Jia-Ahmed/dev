@@ -152,6 +152,7 @@ export default function Footer() {
                 </div>
 
                 <button
+                 suppressHydrationWarning
                   type="submit"
                   disabled={subStatus === 'loading'}
                   className="btn-primary text-sm px-6 py-3 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
