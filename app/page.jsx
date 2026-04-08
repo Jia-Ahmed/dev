@@ -1,25 +1,3 @@
-// import HeroSection from '@/components/home/HeroSection'
-// import ServicesSection from '@/components/home/ServicesSection'
-// import Portfolio from '@/components/home/Portfolio'
-// import TechStack from '@/components/home/TechStack'
-// import AboutSection from '@/components/home/AboutSection'
-// import ContactSection from '@/components/home/ContactSection'
-
-// export default function HomePage () {
-//   return (
-//    <main className='min-h-screen'>
-
-//       {/* Ab background color aapke individual sections handle karenge */}
-//       <HeroSection />
-//        <AboutSection />
-//       <ServicesSection />
-//       <Portfolio />
-//       <TechStack />
-//       <ContactSection />
-//     </main>
-//   )
-// }
-
 import HeroSection from '@/components/home/HeroSection'
 import AboutSection from '@/components/home/AboutSection'
 import ServicesSection from '@/components/home/ServicesSection'
