@@ -127,6 +127,21 @@
 
 import ContactForm from '@/components/contactform'
 import Reveal from '@/components/animations/Reveal'
+import { buildMetadata, breadcrumbSchema, localBusinessSchema } from '@/lib/seo'
+export const metadataContact = buildMetadata({
+  title: 'Contact',
+  description:
+    'Get in touch with DevXoft. Tell us about your project and we\'ll respond within 24 hours with a clear plan and honest pricing.',
+  path: '/contact',
+  keywords: ['contact DevXoft', 'hire web developer', 'web development quote', 'get project estimate'],
+})
+ 
+const contactSchemas = [
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Contact', path: '/contact' },
+  ]),
+]
 
 export default function ContactPage () {
   return (

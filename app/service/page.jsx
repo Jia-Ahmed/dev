@@ -4,6 +4,56 @@ import { ServiceData } from '@/constants/ServiceData'
 import Link from 'next/link'
 import LazySection from '@/components/animations/Lazysection'
 import Reveal from '@/components/animations/Reveal'
+import { buildMetadata, breadcrumbSchema, localBusinessSchema } from '@/lib/seo'
+// ══════════════════════════════════════════════════════════════════════════════
+// app/services/page.jsx  (Services — most important for client acquisition)
+// ══════════════════════════════════════════════════════════════════════════════
+export const metadataServices = buildMetadata({
+  title: 'Services',
+  description:
+    'DevXoft offers full-stack web development, Next.js development, UI/UX design, API integration, and AI-powered solutions. Scalable, fast, and SEO-first.',
+  path: '/services',
+  keywords: [
+    'web development services',
+    'Next.js development service',
+    'hire React developer',
+    'UI UX design service',
+    'API development',
+    'AI web integration',
+  ],
+})
+ 
+// JSON-LD for services page (FAQ schema = rich results in Google)
+const servicesFaqSchema = faqSchema([
+  {
+    question: 'What web development services does DevXoft offer?',
+    answer:
+      'DevXoft offers full-stack web development, Next.js & React development, UI/UX design, REST & GraphQL API development, database architecture, and AI-powered feature integration.',
+  },
+  {
+    question: 'How long does a typical web project take?',
+    answer:
+      'A typical project takes 4–8 weeks depending on scope. We follow agile sprints with weekly updates so you always know the progress.',
+  },
+  {
+    question: 'Do you work with clients outside Pakistan?',
+    answer:
+      'Yes. DevXoft works with clients worldwide. All communication is in English and we adapt to your time zone for meetings.',
+  },
+  {
+    question: 'What technologies does DevXoft specialise in?',
+    answer:
+      'Our core stack is Next.js, React, TypeScript, Tailwind CSS, Node.js, MongoDB, and Prisma. We also integrate AI tools like OpenAI and Langchain.',
+  },
+])
+ 
+const servicesSchemas = [
+  servicesFaqSchema,
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Services', path: '/services' },
+  ]),
+]
 
 export default function Services () {
   return (

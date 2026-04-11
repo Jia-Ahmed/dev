@@ -2,6 +2,29 @@
 import React from 'react';
 import FeaturedInsights from '@/components/home/CaseStudiesSection'; // Path check kar len agar component folder mein hai
 import Reveal from "@/components/animations/Reveal";
+import { buildMetadata, breadcrumbSchema, localBusinessSchema } from '@/lib/seo'
+// ══════════════════════════════════════════════════════════════════════════════
+// app/portfolio/page.jsx  (Portfolio)
+// ══════════════════════════════════════════════════════════════════════════════
+export const metadataPortfolio = buildMetadata({
+  title: 'Portfolio',
+  description:
+    'Browse DevXoft\'s portfolio of high-performance web applications, SaaS platforms, and e-commerce solutions built with Next.js and React.',
+  path: '/portfolio',
+  keywords: [
+    'web development portfolio',
+    'Next.js projects',
+    'React portfolio',
+    'SaaS development examples',
+  ],
+})
+ 
+const portfolioSchemas = [
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Portfolio', path: '/portfolio' },
+  ]),
+]
 
 export default function PortfolioMainPage() {
   return (
