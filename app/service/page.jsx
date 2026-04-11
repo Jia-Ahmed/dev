@@ -4,7 +4,7 @@ import { ServiceData } from '@/constants/ServiceData'
 import Link from 'next/link'
 import LazySection from '@/components/animations/Lazysection'
 import Reveal from '@/components/animations/Reveal'
-import { buildMetadata, breadcrumbSchema, localBusinessSchema } from '@/lib/seo'
+import { buildMetadata, breadcrumbSchema,faqSchema } from '@/lib/seo'
 // ══════════════════════════════════════════════════════════════════════════════
 // app/services/page.jsx  (Services — most important for client acquisition)
 // ══════════════════════════════════════════════════════════════════════════════
